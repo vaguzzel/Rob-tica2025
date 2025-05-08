@@ -101,8 +101,8 @@ De acuerdo a lo que hemos visto en el curso, hay dos maneras de estimar la veloc
 <u><strong>Experimental/manual</strong></u>
 * Midiendo el tiempo que tarda el robot en recorrer una distancia en línea recta. 
 * Calculamos la velocidad lineal (v): distancia/tiempo
-* Si ambas ruedas giran igual, podemos suponer:
-    $$ \omega_R = \omega_L = \frac{2v}{r} $$
+* Si ambas ruedas giran igual, podemos suponer: 
+  $$\omega_R = \omega_L = \frac{2v}{r}$$
 * Si hacemos girar el robot en el sitio (una rueda hacia adelante y otra hacia atrás), podemos medir su velocidad angular y deducir la diferencia entre $\omega_R$ y $\omega_L$.
 
 <u><strong>Integrando datos de la IMU</strong></u>
