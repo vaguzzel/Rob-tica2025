@@ -31,7 +31,7 @@ Explicación y conexión correcta de componentes
 
 **Código en archivo:**
 
-###Análisis de mejoras
+### Análisis de mejoras
 
 ## Evaluación (30pts)
 
@@ -98,14 +98,15 @@ Gestiona la entrada de datos, ejecuta algoritmos y envía señales de control a 
 
 De acuerdo a lo que hemos visto en el curso, hay dos maneras de estimar la velocidad sin utilizar encoders:
 
-==**Experimental/manual**==
-    * Midiendo el tiempo que tarda el robot en recorrer una distancia en línea recta. 
-    * Calculamos la velocidad lineal (v): distancia/tiempo
-    * Si ambas ruedas giran igual, podemos suponer:
-        $$ \omega_R = \omega_L = \frac{2v}{r} $$
-    * Si hacemos girar el robot en el sitio (una rueda hacia adelante y otra hacia atrás), podemos medir su velocidad angular y deducir la diferencia entre $\omega_R$ y $\omega_L$.
+<u><strong>Experimental/manual</strong></u>
+* Midiendo el tiempo que tarda el robot en recorrer una distancia en línea recta. 
+* Calculamos la velocidad lineal (v): distancia/tiempo
+* Si ambas ruedas giran igual, podemos suponer:
+    $$ \omega_R = \omega_L = \frac{2v}{r} $$
+* Si hacemos girar el robot en el sitio (una rueda hacia adelante y otra hacia atrás), podemos medir su velocidad angular y deducir la diferencia entre $\omega_R$ y $\omega_L$.
 
-==**Integrando datos de la IMU**==
+<u><strong>Integrando datos de la IMU</strong></u>
+
 Si se dispone de una IMU, esta nos entrega los siguientes datos:
 
 * Aceleración lineal $a_x, a_y$
