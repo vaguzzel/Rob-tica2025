@@ -123,12 +123,9 @@ podemos hacer lo siguiente:
 
   $$ v(t) = \int a_x(t) dt $$
 
-  donde:
-  
-    * $v(t)$: velocidad lineal estimada en el instante $t$.
-
-    * $a_x(t)$: aceleración lineal medida por la IMU en el eje X local.
-
+donde:
+* $v(t)$: velocidad lineal estimada en el instante $t$.
+* $a_x(t)$: aceleración lineal medida por la IMU en el eje X local.
 
 ### ¿Cómo afecta la falta de encoders a la precisión del movimiento?
 
