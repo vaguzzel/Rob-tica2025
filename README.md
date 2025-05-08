@@ -1,15 +1,15 @@
-#Integrantes:
+# Integrantes:
 - Francisca Abarca P.
 - Isidora Cisternas C.
 - Rodolfo Fernández V.
 - Valentina Guzmán E.
 - Fabián Solís P.
 
-#Rama de laboratorio 1 asignatura Robótica y sistemas autónomos
+# Rama de laboratorio 1 asignatura Robótica y sistemas autónomos
 
 # Parte 1: Identificación de componentes y configuración
 
-Explicación y conexión correcta de componentes
+**Explicación y conexión correcta de componentes**
 
 * Conectar Arduino UNO con el driver de motores y programar el movimiento básico de los motores (adelante, atrás, giro) sin controlar la velocidad.
 
@@ -21,7 +21,7 @@ Explicación y conexión correcta de componentes
 
 [Funcionamiento HC-SR04](https://youtu.be/wvHxKn6BggM?si=rP3vbJPwl7Z80Ynp "Midiendo distancias")
 
-**Código en archivo:**
+**Código en archivo:** Prueba_Sensor_ultraSonico.ino
 
 * Analizar los datos del IMU MPUC6050 para medir inclinación o giros del robot.
 
@@ -29,7 +29,9 @@ Explicación y conexión correcta de componentes
 
 **Análisis datos del IMU**
 
-**Código en archivo:**
+**Código en archivo:** Prueba_Sensor_MPU.ino
+
+**Código en archivo:** Calibracion.ino
 
 ### Análisis de mejoras
 
@@ -40,11 +42,56 @@ Explicación y conexión correcta de componentes
 * Implementación y prueba de control de velocidad por intervalos de tiempo (10pts).
 * Respuesta a las preguntas teóricas y análisis de mejoras (6pts).
 
+---
+
 ## Parte 2: Cinemática y Dinámica de Robots Móviles usando un IMU
 
 * Aplicar la ecuación de cinemática diferencial para estimar la posición del robot usando tiempo y velocidad de motores.
+
+[Foto Puntos inicial, aproximado y final](https://drive.google.com/file/d/1b8-uuxRBczcfXvhely9kyNeEN0WE4qRK/view?usp=sharing "clic para ver la imagen")
+
+
+**Código en archivo:** Estimar_Posicion_Cinematica.ino
+
+### Estimación de la posición del robot
+
+**Cálculo de la velocidad lineal**
+
+Primero, calculamos la velocidad lineal del robot. Para esto, realizamos varias pruebas en las que el robot avanzaba en línea recta durante 5 segundos. Luego medimos la distancia que recorrió en cada prueba.
+Hicimos entre 3 a 4 repeticiones y calculamos el promedio de las distancias obtenidas.
+
+**Uso de la velocidad lineal en el código**
+
+La velocidad lineal fue necesaria para aplicar las ecuaciones mencionadas en el punto 1 de la parte 2 del trabajo.
+Estas ecuaciones fueron utilizadas en el código **`Estimar_Posicion_Cinemática`**, con el objetivo de que el programa estimara la posición del robot durante su desplazamiento.
+
+**Secuencia de movimiento del robot**
+
+El recorrido programado del robot consistió en:
+
+* Avanzar en línea recta durante 3 segundos.
+* Girar sobre su propio eje durante 2 segundos.
+
+Esta secuencia se encuentra detallada en el código. En la imagen correspondiente, se observa la posición inicial del robot en el punto **(0, 0)** y la posición final medida manualmente en aproximadamente **(143, -35)**. Esta posición real demuestra que el robot no avanzó en línea recta de forma perfecta.
+
+El programa estimó un punto final diferente, que corresponde a donde **el robot *debería*** haber terminado su recorrido, según los cálculos de cinemática.
+
+**Análisis de posibles errores y mejoras**
+
+La desviación entre la posición real y la estimada puede deberse a varias causas:
+
+* La batería se agota rápidamente (se probaron 3 baterías distintas).
+* La posición de las ruedas: una rueda está un poco más apretada que la otra.
+* El valor de la velocidad lineal es una **aproximación**.
+* Condiciones del piso donde se realizó la prueba.
+
+
 * Hacer que el robot se mueva en línea recta y registrar desviaciones usando el sensor IMU para detectar la inclinación y giro del robot.
+
+
 * Usar el sensor IMU MPU6050 para medir la inclinación del robot y ajustar su dirección en tiempo real, realizando correcciones en el movimiento de acuerdo a su orientación.
+
+
 * Programar el PWM para controlar la velocidad de los motores y hacer que el robot se mueva a diferentes velocidades sin IMU, variando el tiempo de activación de los motores.
 
 ## Evaluación (40pts)
