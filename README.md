@@ -124,7 +124,9 @@ podemos hacer lo siguiente:
   $$ v(t) = \int a_x(t) dt $$
 
   donde:
+  
     * $v(t)$: velocidad lineal estimada en el instante $t$.
+
     * $a_x(t)$: aceleración lineal medida por la IMU en el eje X local.
 
 
