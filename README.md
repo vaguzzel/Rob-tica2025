@@ -9,7 +9,9 @@
 
 # Parte 1: Identificación de componentes y configuración
 
-**Explicación y conexión correcta de componentes**
+
+[Explicación y conexión correcta de componentes](https://youtu.be/FO4zradAQBo "clic para ver video")
+
 ---
 
 * Conectar Arduino UNO con el driver de motores y programar el movimiento básico de los motores (adelante, atrás, giro) sin controlar la velocidad.
@@ -227,3 +229,90 @@ El control de velocidad mediante PWM es una herramienta importante para intentar
 
 ## Preguntas parte 2
 
+## ¿Cómo se calcula la velocidad del robot sin encoders usando PWM?
+
+Para calcular la velocidad de un robot sin encoders usando PWM, se sigue un procedimiento experimental:
+
+1.  **Controlar la Potencia del Motor con PWM**:
+    * Se utiliza una señal PWM (Modulación por Ancho de Pulso) para controlar la velocidad de los motores. Esto se hace, por ejemplo, con la función `analogWrite(pinPWM, valorPWM);` en Arduino, donde `valorPWM` (un número entre 0-255) se envía al pin de habilitación del controlador de motor.
+    * Un controlador de motores como el L298N "Controla velocidad mediante PWM".
+
+2.  **Realizar Medición Experimental para el Valor de PWM Establecido**:
+    * Debido a que no hay encoders, el método es "experimental/manual".
+    * Se hace que el robot recorra una distancia conocida en línea recta.
+    * Se mide el tiempo que tarda el robot en cubrir esa distancia.
+
+3.  **Calcular la Velocidad Lineal ($v$)**:
+    * La velocidad lineal ($v$) se calcula usando la distancia y el tiempo medidos:
+        $v = \text{distancia} / \text{tiempo}$
+
+4.  **Estimar la Velocidad Angular de las Ruedas ($\omega_R, \omega_L$)**:
+    * Con la velocidad lineal ($v$) obtenida (correspondiente al valor de PWM usado) y conociendo el radio de las ruedas ($r$), se puede estimar la velocidad angular.
+    * Si se asume que ambas ruedas giran a la misma velocidad (por ejemplo, si se aplicó el mismo PWM a ambas y el robot se movió en línea recta):
+        $\omega_R = \omega_L = \frac{2v}{r}$
+    
+
+Este método proporciona una estimación de la velocidad para un nivel de PWM específico. Para conocer la velocidad a diferentes niveles de PWM, el proceso experimental debería repetirse.
+
+
+## ¿Cómo factores afectan la trayectoria y velocidad del robot al cambiar los intervalos de tiempo?
+
+
+* **Cálculo de la trayectoria**: Al estimar la posición futura $(x_{(k+1)}, y_{(k+1)})$, $\Delta t$ multiplica directamente el avance del robot en cada paso ($v \cos(\theta) \Delta t$ y $v \sin(\theta) \Delta t$) . Por lo tanto, cambios en $\Delta t$ alteran la longitud de cada segmento de la trayectoria calculada.
+
+* **Precisión de la odometría**: La integración de la velocidad en el tiempo para obtener la posición (odometría) depende de $\Delta t$ como paso de integración. Un $\Delta t$ inadecuado puede reducir la precisión de la trayectoria estimada.
+
+* **Estimación del estado**: En filtros como el de Kalman, $\Delta t$ ("intervalo de tiempo entre pasos de muestreo") se usa en la predicción del estado (ej. $x_k^- = x_{k-1} + \omega_k \cdot \Delta t$) . Cambios en $\Delta t$ afectan la exactitud de esta predicción, impactando la estimación de la orientación (trayectoria) y la velocidad.
+
+* **Frecuencia de sensado y control**: $\Delta t$ define la frecuencia con que se leen los sensores (ej. IMU) y se actualizan los controles. Intervalos mayores pueden disminuir la capacidad del robot para seguir con precisión una trayectoria o mantener una velocidad deseada debido a una menor frecuencia de actualización.
+
+* **Latencia**: Intervalos de tiempo ($\Delta t$) grandes pueden introducir "Latencia o desfase temporal" en sistemas de tiempo real, afectando la respuesta del robot para ajustar su velocidad y trayectoria.
+
+## ¿Cuáles son las ventajas y desventajas de usar un IMU para ajustar la dirección en lugar de encoders?
+
+**IMU (Unidad de Medición Inercial) para ajustar la dirección:**
+
+* **Ventajas:**
+    * Permite "medir orientación si no tienes encoders".
+    * Se utiliza para "mejorar [la estimación de la] orientación".
+    * En un robot diferencial, la "Velocidad angular en Z [del giroscopio de la IMU]" se usa normalmente "para estimar la orientación (Yaw $\theta$)" , lo cual es una medida directa relacionada con la dirección.
+
+* **Desventajas:**
+    * El giroscopio, que mide la velocidad angular para determinar la orientación, "deriva con el tiempo".
+    * Las IMU requieren calibración para "compensar el offset de los sensores".
+    * El acelerómetro (que puede usarse en la fusión de sensores para estimar ángulos) proporciona una "medición ruidosa".
+
+**Encoders para ajustar la dirección (indirectamente a través de la odometría):**
+
+* **Ventajas (relacionadas con la base para calcular cambios de dirección):**
+    * Miden "cuántos pasos o vueltas ha dado cada rueda", información fundamental para la odometría que calcula cambios de posición y orientación.
+    * Los encoders absolutos proporcionan una "posición única para cada ángulo" y son "Ideal para robótica precisa", lo que sugiere una base fiable para calcular cambios de orientación si no hay deslizamiento.
+
+* **Desventajas (relacionadas con el ajuste de la dirección global del robot):**
+    * Los encoders incrementales "No indica[n] posición absoluta $\rightarrow$ necesita[n] referencia inicial" para conocer la orientación de partida.
+    * La odometría basada en encoders (que se usa para inferir la dirección) acumula errores. Se menciona que la IMU o el LIDAR se pueden usar para "corregir errores" de la odometría.
+
+## ¿Qué efecto tiene la inclinación o el giro en el movimiento del robot, y cómo se corrige con el IMU?
+
+* **Giro (Yaw):**
+    * El Yaw ($\theta$) es la orientación del robot en el plano y define su dirección de movimiento
+    * Un cambio en el Yaw ($\dot{\theta} \neq 0$) significa que el robot está girando, lo cual altera su trayectoria. La velocidad angular ($\omega$) del robot define cuánto rota sobre su propio eje.
+
+* **Inclinación (Roll, Pitch):**
+    * La inclinación es un cambio de postura que puede ser detectado por el acelerómetro de una IMU.
+    * Afecta la "estabilidad dinámica" del robot, que es su capacidad de mantener el equilibrio mientras se mueve considerando cambios de postura.
+
+**Cómo se Corrige con la IMU:**
+
+* **Detección por la IMU:**
+    * El **giroscopio** mide la velocidad angular en los tres ejes (roll, pitch, yaw).
+    * El **acelerómetro** mide la aceleración lineal y puede detectar si el robot "se inclina".
+
+* **Corrección del Giro (Yaw / Dirección):**
+    * La "Velocidad angular en Z" medida por el giroscopio se usa para estimar la orientación (Yaw, $\theta$) del robot.
+    * Esta estimación de $\theta$ se obtiene al integrar la velocidad angular Z. El valor de $\theta$ resultante se utiliza en el sistema de control y en las ecuaciones de estimación de posición para ajustar la dirección.
+
+* **Corrección de la Inclinación y Estimación General del Ángulo:**
+    * Para obtener una estimación precisa del "ángulo de inclinación", se pueden combinar las mediciones del giroscopio (que sufre deriva) y del acelerómetro (que es ruidoso) mediante un **Filtro de Kalman**.
+    * El Filtro de Kalman proporciona la "mejor estimación del estado actual combinando predicción y mediciones ruidosas", permitiendo una corrección más fiable del ángulo.
+    * Para la estabilidad dinámica, un "sistema de control activo del equilibrio" utiliza "sensores IMU" para compensar los cambios de postura como la inclinación.
