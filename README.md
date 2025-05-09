@@ -93,7 +93,7 @@ En suelo de baldosas, el comportamiento fue mucho más inestable: fuertes sacudi
 **Todos los detalles se encuentran en los siguientes documentos:**
 
 **Archivo:** DatosIMUbaldosas.pdf
-**Archivo:** DatosIMUsuperficieLISA.pdf
+**Archivo:** DatosIMUsueloLiso.pdf
 
 ---
 
