@@ -84,12 +84,26 @@ La desviación entre la posición real y la estimada puede deberse a varias caus
 * La posición de las ruedas: una rueda está un poco más apretada que la otra.
 * El valor de la velocidad lineal es una **aproximación**.
 * Condiciones del piso donde se realizó la prueba.
-
-
+---
 * Hacer que el robot se mueva en línea recta y registrar desviaciones usando el sensor IMU para detectar la inclinación y giro del robot.
 
+**Código en archivo:** Punto2_Parte2.ino
+
+En superficie plana, el robot mostró un movimiento muy estable: rumbo recto (Yaw ≈ -0.4°), inclinación frontal leve pero constante (Pitch ≈ -2.5°), y casi sin inclinación lateral ni sacudidas. Esto indica que los errores de odometría (como la desviación de -35 cm en Y) no se deben a giros o inestabilidad, sino a limitaciones del modelo basado en PWM (velocidades desiguales, slip, no linealidades).
+
+En suelo de baldosas, el comportamiento fue mucho más inestable: fuertes sacudidas verticales, grandes fluctuaciones en Pitch y Roll, y un Yaw con giros rápidos y correcciones constantes. La IMU evidenció cómo las irregularidades del terreno afectan drásticamente la estabilidad y precisión del robot, haciendo que la odometría simple sea aún menos confiable.
+
+**Todos los detalles se encuentran en los siguientes documentos:**
+
+**Archivo:** DatosIMUbaldosas.pdf
+**Archivo:** DatosIMUsuperficieLISA.pdf
+
+---
 
 * Usar el sensor IMU MPU6050 para medir la inclinación del robot y ajustar su dirección en tiempo real, realizando correcciones en el movimiento de acuerdo a su orientación.
+
+
+
 
 
 * Programar el PWM para controlar la velocidad de los motores y hacer que el robot se mueva a diferentes velocidades sin IMU, variando el tiempo de activación de los motores.
