@@ -104,21 +104,16 @@ En suelo de baldosas, el comportamiento fue mucho más inestable: fuertes sacudi
 
 **Código en archivo:** Punto3_Parte2.ino
 
+[Video correspondiente punto 3](https://youtu.be/OEEr5RuJbBo"clic para ver el video")
 
 ---
 
 * Programar el PWM para controlar la velocidad de los motores y hacer que el robot se mueva a diferentes velocidades sin IMU, variando el tiempo de activación de los motores.
 
-## Evaluación (40pts)
-
-* Implementación de código de cinemática y control de velocidad con el IMU (15pts)
-* Ajuste de dirección y corrección de inclinación usando el IMU (15pts)
-* Respuesta a las preguntas teóricas y análisis de mejoras (10 pts)
+[Video correspondiente punto 4](https://youtu.be/tACz6qkU_rw"clic para ver el video")
 
 
-
-
-
+---
 
 
 # Acá se encuentran las respuestas al laboratorio 1 (parte 1 y 2)
