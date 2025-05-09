@@ -102,9 +102,10 @@ En suelo de baldosas, el comportamiento fue mucho más inestable: fuertes sacudi
 
 * Usar el sensor IMU MPU6050 para medir la inclinación del robot y ajustar su dirección en tiempo real, realizando correcciones en el movimiento de acuerdo a su orientación.
 
+**Código en archivo:** Punto3_Parte2.ino
 
 
-
+---
 
 * Programar el PWM para controlar la velocidad de los motores y hacer que el robot se mueva a diferentes velocidades sin IMU, variando el tiempo de activación de los motores.
 
