@@ -12,7 +12,6 @@
 
 [Explicación y conexión correcta de componentes](https://youtu.be/FO4zradAQBo "clic para ver video")
 
----
 
 * Conectar Arduino UNO con el driver de motores y programar el movimiento básico de los motores (adelante, atrás, giro) sin controlar la velocidad.
 
@@ -26,7 +25,6 @@
 [Funcionamiento HC-SR04](https://youtu.be/wvHxKn6BggM?si=rP3vbJPwl7Z80Ynp "Midiendo distancias")
 
 **Código en archivo:** Prueba_Sensor_ultraSonico.ino
-
 ---
 
 * Analizar los datos del IMU MPUC6050 para medir inclinación o giros del robot.
@@ -40,7 +38,6 @@
 ---
 
 **Análisis parte 1 en archivo:** parte1Análisis.pdf
-
 ---
 
 ## Parte 2: Cinemática y Dinámica de Robots Móviles usando un IMU
@@ -84,6 +81,7 @@ La desviación entre la posición real y la estimada puede deberse a varias caus
 * El valor de la velocidad lineal es una **aproximación**.
 * Condiciones del piso donde se realizó la prueba.
 ---
+
 * Hacer que el robot se mueva en línea recta y registrar desviaciones usando el sensor IMU para detectar la inclinación y giro del robot.
 
 **Código en archivo:** Punto2_Parte2.ino
@@ -96,7 +94,6 @@ En suelo de baldosas, el comportamiento fue mucho más inestable: fuertes sacudi
 
 **Archivo:** DatosIMUbaldosas.pdf
 **Archivo:** DatosIMUsueloLiso.pdf
-
 ---
 
 * Usar el sensor IMU MPU6050 para medir la inclinación del robot y ajustar su dirección en tiempo real, realizando correcciones en el movimiento de acuerdo a su orientación.
@@ -104,7 +101,6 @@ En suelo de baldosas, el comportamiento fue mucho más inestable: fuertes sacudi
 **Código en archivo:** Punto3_Parte2.ino
 
 [Video correspondiente punto 3](https://youtu.be/OEEr5RuJbBo "clic para ver el video")
-
 ---
 
 * Programar el PWM para controlar la velocidad de los motores y hacer que el robot se mueva a diferentes velocidades sin IMU, variando el tiempo de activación de los motores.
@@ -122,10 +118,7 @@ Se estimó el ángulo Yaw integrando la velocidad angular (gyroZ\_cal) en el tie
 Durante la depuración, se corrigió la dirección de la corrección (el signo estaba invertido) y se ajustó la ganancia proporcional **Kp**, encontrando que **Kp = 2.0** ofrecía una corrección eficaz y estable. Con este valor, el robot mantuvo un rumbo recto durante 10 segundos de prueba, compensando exitosamente las diferencias mecánicas entre ruedas.
 
 **Conclusión**: El controlador proporcional basado en IMU permitió mejorar significativamente la precisión del movimiento recto, validando la efectividad del control en lazo cerrado frente al lazo abierto.
-
-
 ---
-
 
 # Acá se encuentran las respuestas al laboratorio 1 (parte 1 y 2)
 
@@ -218,14 +211,13 @@ El PWM permite controlar la velocidad del motor de forma eficiente al regular la
 
 ### ¿Cómo afecta el control de velocidad a la precisión de la navegación sin encoders?
 
-El control de velocidad mediante PWM puede mejorar la precisión de la navegación sin encoders en comparación con simplemente aplicar la máxima potencia a los motores, pero **no elimina las limitaciones inherentes a la falta de retroalimentación directa
+El control de velocidad mediante PWM puede mejorar la precisión de la navegación sin encoders en comparación con simplemente aplicar la máxima potencia a los motores, pero **no elimina las limitaciones inherentes a la falta de retroalimentación directa**
 
 * Al poder ajustar la velocidad de los motores, se puede intentar seguir las velocidades deseadas para cada rueda según un modelo cinemático. Esto permite realizar giros controlados y movimientos en línea recta de manera más predecible que si los motores siempre funcionaran a máxima velocidad.
 * Un control de velocidad más fino puede ayudar a reducir el deslizamiento de las ruedas en ciertas condiciones, ya que se puede aplicar la potencia necesaria en lugar de un exceso que podría causar patinaje.
 * Sin embargo, sin encoders, no hay una forma directa de verificar si las ruedas están girando a la velocidad deseada. Factores como la carga, la fricción del suelo, o las pequeñas diferencias entre motores pueden hacer que las velocidades reales difieran de las ordenadas, lo que inevitablemente llevará a errores acumulativos en la odometría (estimación de la posición y orientación).
 * Aunque el control de velocidad permite una ejecución más predecible de los comandos de movimiento, la ausencia de retroalimentación sobre la distancia real recorrida y la rotación de las ruedas impide corregir los errores que se van acumulando durante la navegación.
-
-El control de velocidad mediante PWM es una herramienta importante para intentar lograr una navegación más precisa sin encoders, pero la falta de una medición directa del movimiento de las ruedas sigue siendo una limitación fundamental para la precisión a largo plazo y en entornos complejos.
+---
 
 ## Preguntas parte 2
 
@@ -270,7 +262,7 @@ Este método proporciona una estimación de la velocidad para un nivel de PWM es
 
 ## ¿Cuáles son las ventajas y desventajas de usar un IMU para ajustar la dirección en lugar de encoders?
 
-**IMU (Unidad de Medición Inercial) para ajustar la dirección:**
+**IMU**
 
 * **Ventajas:**
     * Permite "medir orientación si no tienes encoders".
@@ -282,15 +274,15 @@ Este método proporciona una estimación de la velocidad para un nivel de PWM es
     * Las IMU requieren calibración para "compensar el offset de los sensores".
     * El acelerómetro (que puede usarse en la fusión de sensores para estimar ángulos) proporciona una "medición ruidosa".
 
-**Encoders para ajustar la dirección (indirectamente a través de la odometría):**
+**Encoders**
 
 * **Ventajas (relacionadas con la base para calcular cambios de dirección):**
     * Miden "cuántos pasos o vueltas ha dado cada rueda", información fundamental para la odometría que calcula cambios de posición y orientación.
     * Los encoders absolutos proporcionan una "posición única para cada ángulo" y son "Ideal para robótica precisa", lo que sugiere una base fiable para calcular cambios de orientación si no hay deslizamiento.
 
 * **Desventajas (relacionadas con el ajuste de la dirección global del robot):**
-    * Los encoders incrementales "No indica[n] posición absoluta $\rightarrow$ necesita[n] referencia inicial" para conocer la orientación de partida.
-    * La odometría basada en encoders (que se usa para inferir la dirección) acumula errores. Se menciona que la IMU o el LIDAR se pueden usar para "corregir errores" de la odometría.
+    * Los encoders incrementales "No indican posición absoluta $\rightarrow$ necesitan referencia inicial" para conocer la orientación de partida.
+    * La odometría basada en encoders (que se usa para inferir la dirección) acumula errores. La IMU o el LIDAR se pueden usar para "corregir errores" de la odometría.
 
 ## ¿Qué efecto tiene la inclinación o el giro en el movimiento del robot, y cómo se corrige con el IMU?
 
@@ -313,6 +305,6 @@ Este método proporciona una estimación de la velocidad para un nivel de PWM es
     * Esta estimación de $\theta$ se obtiene al integrar la velocidad angular Z. El valor de $\theta$ resultante se utiliza en el sistema de control y en las ecuaciones de estimación de posición para ajustar la dirección.
 
 * **Corrección de la Inclinación y Estimación General del Ángulo:**
-    * Para obtener una estimación precisa del "ángulo de inclinación", se pueden combinar las mediciones del giroscopio (que sufre deriva) y del acelerómetro (que es ruidoso) mediante un **Filtro de Kalman**.
-    * El Filtro de Kalman proporciona la "mejor estimación del estado actual combinando predicción y mediciones ruidosas", permitiendo una corrección más fiable del ángulo.
-    * Para la estabilidad dinámica, un "sistema de control activo del equilibrio" utiliza "sensores IMU" para compensar los cambios de postura como la inclinación.
+    * Para obtener una estimación precisa del ángulo de inclinación, se pueden combinar las mediciones del giroscopio y del acelerómetro mediante un **Filtro de Kalman**.
+    * El Filtro de Kalman proporciona la mejor estimación del estado actual combinando predicción y mediciones ruidosas, permitiendo una corrección más fiable del ángulo.
+    * Para la estabilidad dinámica, un "sistema de control activo del equilibrio" utiliza sensores IMU para compensar los cambios de postura como la inclinación.
