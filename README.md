@@ -10,12 +10,14 @@
 # Parte 1: Identificación de componentes y configuración
 
 **Explicación y conexión correcta de componentes**
+---
 
 * Conectar Arduino UNO con el driver de motores y programar el movimiento básico de los motores (adelante, atrás, giro) sin controlar la velocidad.
 
 [Video movimientos básicos](https://youtu.be/BtpZs1f40o8?si=-_AthLWavxAlf-Dt "Adelante, atrás, giro")
 
 **Código en archivo:** Prueba_Movimientos.ino
+---
 
 * Verificar el funcionamiento del sensor ultrasónico HC-SR04 midiendo distancias.
 
@@ -23,24 +25,19 @@
 
 **Código en archivo:** Prueba_Sensor_ultraSonico.ino
 
+---
+
 * Analizar los datos del IMU MPUC6050 para medir inclinación o giros del robot.
 
 [Datos IMU inclinación o giros](https://youtu.be/ShGm47EegdY?si=PW9aZJe60bWVoij4 "Inclinación o giros del robot")
 
-**Análisis datos del IMU**
 
 **Código en archivo:** Prueba_Sensor_MPU.ino
 
 **Código en archivo:** Calibracion.ino
+---
 
-### Análisis de mejoras
-
-## Evaluación (30pts)
-
-* Explicación y conexión correcta de componentes (8pts).
-* Implementación del control de motores (6pts).
-* Implementación y prueba de control de velocidad por intervalos de tiempo (10pts).
-* Respuesta a las preguntas teóricas y análisis de mejoras (6pts).
+**Análisis parte 1 en archivo:** parte1Análisis.pdf
 
 ---
 
@@ -104,13 +101,25 @@ En suelo de baldosas, el comportamiento fue mucho más inestable: fuertes sacudi
 
 **Código en archivo:** Punto3_Parte2.ino
 
-[Video correspondiente punto 3](https://youtu.be/OEEr5RuJbBo"clic para ver el video")
+[Video correspondiente punto 3](https://youtu.be/OEEr5RuJbBo "clic para ver el video")
 
 ---
 
 * Programar el PWM para controlar la velocidad de los motores y hacer que el robot se mueva a diferentes velocidades sin IMU, variando el tiempo de activación de los motores.
 
-[Video correspondiente punto 4](https://youtu.be/tACz6qkU_rw"clic para ver el video")
+[Video correspondiente punto 4](https://youtu.be/tACz6qkU_rw "clic para ver el video")
+
+
+**Código en archivo:** Punto4_Parte2.ino
+
+Se detectó que el robot se desviaba al avanzar recto, debido a que la rueda izquierda giraba más lento por mayor resistencia mecánica. Para corregir esto, se implementó un **control en lazo cerrado** usando el giroscopio del IMU (MPU-6500).
+
+Se estimó el ángulo Yaw integrando la velocidad angular (gyroZ\_cal) en el tiempo, y se usó un **controlador proporcional (P)** con un objetivo de 0° (mantener rumbo recto). El error de Yaw se transformó en una señal de corrección que ajustaba los PWM de las ruedas:
+`pwmLeft = BASE_PWM + correction`, `pwmRight = BASE_PWM - correction`.
+
+Durante la depuración, se corrigió la dirección de la corrección (el signo estaba invertido) y se ajustó la ganancia proporcional **Kp**, encontrando que **Kp = 2.0** ofrecía una corrección eficaz y estable. Con este valor, el robot mantuvo un rumbo recto durante 10 segundos de prueba, compensando exitosamente las diferencias mecánicas entre ruedas.
+
+**Conclusión**: El controlador proporcional basado en IMU permitió mejorar significativamente la precisión del movimiento recto, validando la efectividad del control en lazo cerrado frente al lazo abierto.
 
 
 ---
@@ -118,7 +127,7 @@ En suelo de baldosas, el comportamiento fue mucho más inestable: fuertes sacudi
 
 # Acá se encuentran las respuestas al laboratorio 1 (parte 1 y 2)
 
-## Preguntas
+## Preguntas parte 1
 
 ### ¿Qué función cumple los sensores, actuadores y controladores en el robot?
 
@@ -215,3 +224,6 @@ El control de velocidad mediante PWM puede mejorar la precisión de la navegaci�
 * Aunque el control de velocidad permite una ejecución más predecible de los comandos de movimiento, la ausencia de retroalimentación sobre la distancia real recorrida y la rotación de las ruedas impide corregir los errores que se van acumulando durante la navegación.
 
 El control de velocidad mediante PWM es una herramienta importante para intentar lograr una navegación más precisa sin encoders, pero la falta de una medición directa del movimiento de las ruedas sigue siendo una limitación fundamental para la precisión a largo plazo y en entornos complejos.
+
+## Preguntas parte 2
+
