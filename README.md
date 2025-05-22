@@ -5,7 +5,7 @@
 - Valentina Guzmán E.
 - Fabián Solís P.
 
-# Rama de laboratorio 1 asignatura Robótica y sistemas autónomos
+# Rama de laboratorio 2 asignatura Robótica y sistemas autónomos
 
 # Parte 1: Identificación de componentes y configuración
 
