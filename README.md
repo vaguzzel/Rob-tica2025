@@ -7,9 +7,24 @@
 
 # Rama de laboratorio 2 asignatura Robótica y sistemas autónomos
 
-# Parte 1: Identificación de componentes y configuración
+# Parte 1: Configuración del Hardware y pruebas iniciales
+
+• Conectar los sensores ultrasóonico HC-SR04 y RGB en Arduino.
 
 
+
+• Programar Arduino para leer la distancia con HC-SR04 y mostrarla en
+el monitor serie.
+
+
+• Programar Arduino para leer los valores RGB y mostrar el color detectado.
+(Lo de la calibración es un paso oculto)
+
+
+• Analizar la precisón de los sensores en diferentes condiciones (luz,
+superficie, distancia). FALTA
+
+AQUI VAS VALENTINA
 [Explicación y conexión correcta de componentes](https://youtu.be/FO4zradAQBo "clic para ver video")
 
 
@@ -120,191 +135,39 @@ Durante la depuración, se corrigió la dirección de la corrección (el signo e
 **Conclusión**: El controlador proporcional basado en IMU permitió mejorar significativamente la precisión del movimiento recto, validando la efectividad del control en lazo cerrado frente al lazo abierto.
 ---
 
-# Acá se encuentran las respuestas al laboratorio 1 (parte 1 y 2)
+# Acá se encuentran las respuestas al laboratorio 2 (parte 1 y 2)
 
 ## Preguntas parte 1
 
-### ¿Qué función cumple los sensores, actuadores y controladores en el robot?
+### ¿Qué es la percepción en robótica y por qué es fundamental en los sistemas autónomos?
 
-**Sensores**
+La percepción en robótica es la capacidad de un robot para recolectar datos de su entorno (y a veces de su propio estado interno) y transformarlos en información útil.  Esta información permite al robot navegar, interactuar o cumplir tareas.
 
-Los sensores son los "órganos de los sentidos" del robot.
-
-Su función principal es **detectar** el entorno y recopilar información. Esto permite al robot **percibir** qué hay a su alrededor, construir una representación del mundo y así **tomar decisiones “inteligentes”**. 
-
-Estos pueden medir magnitudes como posición, distancia, proximidad, luz, sonido, fuerza, presión y también información inercial como aceleración y velocidad angular. La información recopilada por los sensores se utiliza para navegar, interactuar o cumplir tareas.
-
-**Actuadores:**
-
-Un actuador es un dispositivo que convierte energía en movimiento o fuerza. 
-
-Su función es generar movimiento en el robot, permitiéndole realizar acciones físicas. 
-
-Estos permiten que un robot:
--Se desplace (con ruedas o patas)
--Manipule objetos (con brazos robóticos)
--Aplique fuerza y precisión. 
-
-Los actuadores pueden ser eléctricos (como motores DC, servomotores y motores paso a paso), neumáticos, hidráulicos o piezoeléctricos.
-
-**Controladores**
-
-El controlador es el **"cerebro" del robot**. 
-
-Su función es procesar los datos recibidos de los sensores y coordinar las acciones del robot en tiempo real.
-
-Gestiona la entrada de datos, ejecuta algoritmos y envía señales de control a los actuadores para que el robot realice las tareas deseadas.
-
-### ¿Cómo se puede estimar la velocidad sin encoders?
-
-De acuerdo a lo que hemos visto en el curso, hay dos maneras de estimar la velocidad sin utilizar encoders:
-
-<u><strong>Experimental/manual</strong></u>
-* Midiendo el tiempo que tarda el robot en recorrer una distancia en línea recta. 
-* Calculamos la velocidad lineal (v): distancia/tiempo
-* Si ambas ruedas giran igual, podemos suponer: 
-  $$\omega_R = \omega_L = \frac{2v}{r}$$
-* Si hacemos girar el robot en el sitio (una rueda hacia adelante y otra hacia atrás), podemos medir su velocidad angular y deducir la diferencia entre $\omega_R$ y $\omega_L$.
-
-<u><strong>Integrando datos de la IMU</strong></u>
-
-Si se dispone de una IMU, esta nos entrega los siguientes datos:
-
-* Aceleración lineal $a_x, a_y$
-* Velocidad angular $\omega_z$ (Yaw Rate)
-* El modelo clásico es:
-
-$$ \dot{x} = v \cos(\theta) $$
-$$ \dot{y} = v \sin(\theta) $$
-$$ \dot{\theta} = \omega $$
-
-podemos hacer lo siguiente:
-
-**Para obtener estimar la velocidad, integrar la aceleración**
-
-  $$ v(t) = \int a_x(t) dt $$
-
-donde:
-* $v(t)$: velocidad lineal estimada en el instante $t$.
-* $a_x(t)$: aceleración lineal medida por la IMU en el eje X local.
-
-### ¿Cómo afecta la falta de encoders a la precisión del movimiento?
-
-La falta de encoders impide medir directamente el movimiento real de las ruedas, obligando al robot a depender de estimaciones (manuales o por IMU) que no pueden compensar errores como el deslizamiento o el ruido. Estos pequeños errores constantes entre el movimiento estimado y el real se suman en cada paso. Dado que cada nueva estimación de posición y orientación se basa en la anterior —que ya era incorrecta—, los errores se componen y crecen, provocando una discrepancia cada vez mayor entre dónde cree el robot que está y su ubicación real. Esto disminuye drásticamente la precisión del movimiento a lo largo del tiempo y la distancia.
+Es fundamental en los sistemas autónomos porque para que los robots puedan tomar decisiones inteligentes, necesitan percibir qué hay a su alrededor y construir una representación del mundo.  Esta capacidad les permite operar de manera independiente y adaptarse a entornos dinámicos. 
 
 
-### ¿Qué es PWM y cómo ayuda a controlar la velocidad de los motores?
+### En el sensor ultrasónico HC-SR04 ¿Qué parámetro se mide para calcular la distancia?
 
-**¿Qué es?**
-PWM (Pulse Width Modulation o Modulación por Ancho de Pulso) es una técnica utilizada para controlar la potencia suministrada a un dispositivo variando el ciclo de trabajo de una señal digital. 
-Convierte una señal digital en una señal analógica simulada.
+En el sensor ultrasónico HC-SR04, el parámetro que se mide para calcular la distancia es el tiempo que tarda una onda ultrasónica en viajar desde el sensor hasta un objeto y regresar como un eco.  Específicamente, el microcontrolador mide el tiempo durante el cual el pin ECHO del sensor está activado, que corresponde al tiempo de ida y vuelta de la onda sonora. 
 
-**¿Cómo ayuda a controlar la velocidad de los motores?**
+### ¿Cómo influye el ruido en las mediciones del sensor ultrasónico y cómo podría reducirse?
 
-* Se aplica una señal digital oscilante al motor a través del driver.
-* El ciclo de trabajo de esta señal es la proporción del tiempo durante un período en que la señal está en estado "alto" (encendido) en comparación con el tiempo en que está en estado "bajo" (apagado).
-* Al variar el ciclo de trabajo, se varía la cantidad promedio de voltaje que se aplica al motor.
-* Un ciclo de trabajo alto significa que el motor recibe la mayor parte del voltaje y girará más rápido.
-* Un ciclo de trabajo bajo significa que el motor recibe menos voltaje promedio y girará más lento.
+El ruido puede afectar las mediciones del sensor ultrasónico causando datos inconsistentes, es decir, mediciones que saltan bruscamente sin una causa real.  Esto se debe a que los sensores no son perfectos y sus lecturas pueden estar afectadas por factores como interferencias electromagnéticas o el mal diseño del circuito. 
 
-El PWM permite controlar la velocidad del motor de forma eficiente al regular la potencia eléctrica que se le entrega, sin necesidad de variar el voltaje de la fuente de alimentación.
 
-### ¿Cómo afecta el control de velocidad a la precisión de la navegación sin encoders?
+El ruido en las mediciones del sensor ultrasónico podría reducirse mediante técnicas de filtrado de datos.  El filtrado ayuda a suavizar la señal, eliminar picos falsos o extremos y, en general, mejorar la calidad de la información que recibe el sistema.  Algunos tipos de filtros que se pueden aplicar son:
 
-El control de velocidad mediante PWM puede mejorar la precisión de la navegación sin encoders en comparación con simplemente aplicar la máxima potencia a los motores, pero **no elimina las limitaciones inherentes a la falta de retroalimentación directa**
 
-* Al poder ajustar la velocidad de los motores, se puede intentar seguir las velocidades deseadas para cada rueda según un modelo cinemático. Esto permite realizar giros controlados y movimientos en línea recta de manera más predecible que si los motores siempre funcionaran a máxima velocidad.
-* Un control de velocidad más fino puede ayudar a reducir el deslizamiento de las ruedas en ciertas condiciones, ya que se puede aplicar la potencia necesaria en lugar de un exceso que podría causar patinaje.
-* Sin embargo, sin encoders, no hay una forma directa de verificar si las ruedas están girando a la velocidad deseada. Factores como la carga, la fricción del suelo, o las pequeñas diferencias entre motores pueden hacer que las velocidades reales difieran de las ordenadas, lo que inevitablemente llevará a errores acumulativos en la odometría (estimación de la posición y orientación).
-* Aunque el control de velocidad permite una ejecución más predecible de los comandos de movimiento, la ausencia de retroalimentación sobre la distancia real recorrida y la rotación de las ruedas impide corregir los errores que se van acumulando durante la navegación.
----
+  1. Filtro de media móvil. 
+  2. Filtro de media ponderada. 
+  3. Filtro pasa bajos. 
+
+Estas técnicas permiten reducir las fluctuaciones no deseadas y obtener mediciones más precisas y confiables.
+
+
+
+----
 
 ## Preguntas parte 2
 
 ## ¿Cómo se calcula la velocidad del robot sin encoders usando PWM?
-
-Para calcular la velocidad de un robot sin encoders usando PWM, se sigue un procedimiento experimental:
-
-1.  **Controlar la Potencia del Motor con PWM**:
-    * Se utiliza una señal PWM (Modulación por Ancho de Pulso) para controlar la velocidad de los motores. Esto se hace, por ejemplo, con la función `analogWrite(pinPWM, valorPWM);` en Arduino, donde `valorPWM` (un número entre 0-255) se envía al pin de habilitación del controlador de motor.
-    * Un controlador de motores como el L298N "Controla velocidad mediante PWM".
-
-2.  **Realizar Medición Experimental para el Valor de PWM Establecido**:
-    * Debido a que no hay encoders, el método es "experimental/manual".
-    * Se hace que el robot recorra una distancia conocida en línea recta.
-    * Se mide el tiempo que tarda el robot en cubrir esa distancia.
-
-3.  **Calcular la Velocidad Lineal ($v$)**:
-    * La velocidad lineal ($v$) se calcula usando la distancia y el tiempo medidos:
-        $v = \text{distancia} / \text{tiempo}$
-
-4.  **Estimar la Velocidad Angular de las Ruedas ($\omega_R, \omega_L$)**:
-    * Con la velocidad lineal ($v$) obtenida (correspondiente al valor de PWM usado) y conociendo el radio de las ruedas ($r$), se puede estimar la velocidad angular.
-    * Si se asume que ambas ruedas giran a la misma velocidad (por ejemplo, si se aplicó el mismo PWM a ambas y el robot se movió en línea recta):
-        $\omega_R = \omega_L = \frac{2v}{r}$
-    
-
-Este método proporciona una estimación de la velocidad para un nivel de PWM específico. Para conocer la velocidad a diferentes niveles de PWM, el proceso experimental debería repetirse.
-
-
-## ¿Cómo factores afectan la trayectoria y velocidad del robot al cambiar los intervalos de tiempo?
-
-
-* **Cálculo de la trayectoria**: Al estimar la posición futura $(x_{(k+1)}, y_{(k+1)})$, $\Delta t$ multiplica directamente el avance del robot en cada paso ($v \cos(\theta) \Delta t$ y $v \sin(\theta) \Delta t$) . Por lo tanto, cambios en $\Delta t$ alteran la longitud de cada segmento de la trayectoria calculada.
-
-* **Precisión de la odometría**: La integración de la velocidad en el tiempo para obtener la posición (odometría) depende de $\Delta t$ como paso de integración. Un $\Delta t$ inadecuado puede reducir la precisión de la trayectoria estimada.
-
-* **Estimación del estado**: En filtros como el de Kalman, $\Delta t$ ("intervalo de tiempo entre pasos de muestreo") se usa en la predicción del estado (ej. $x_k^- = x_{k-1} + \omega_k \cdot \Delta t$) . Cambios en $\Delta t$ afectan la exactitud de esta predicción, impactando la estimación de la orientación (trayectoria) y la velocidad.
-
-* **Frecuencia de sensado y control**: $\Delta t$ define la frecuencia con que se leen los sensores (ej. IMU) y se actualizan los controles. Intervalos mayores pueden disminuir la capacidad del robot para seguir con precisión una trayectoria o mantener una velocidad deseada debido a una menor frecuencia de actualización.
-
-* **Latencia**: Intervalos de tiempo ($\Delta t$) grandes pueden introducir "Latencia o desfase temporal" en sistemas de tiempo real, afectando la respuesta del robot para ajustar su velocidad y trayectoria.
-
-## ¿Cuáles son las ventajas y desventajas de usar un IMU para ajustar la dirección en lugar de encoders?
-
-**IMU**
-
-* **Ventajas:**
-    * Permite "medir orientación si no tienes encoders".
-    * Se utiliza para "mejorar [la estimación de la] orientación".
-    * En un robot diferencial, la "Velocidad angular en Z [del giroscopio de la IMU]" se usa normalmente "para estimar la orientación (Yaw $\theta$)" , lo cual es una medida directa relacionada con la dirección.
-
-* **Desventajas:**
-    * El giroscopio, que mide la velocidad angular para determinar la orientación, "deriva con el tiempo".
-    * Las IMU requieren calibración para "compensar el offset de los sensores".
-    * El acelerómetro (que puede usarse en la fusión de sensores para estimar ángulos) proporciona una "medición ruidosa".
-
-**Encoders**
-
-* **Ventajas (relacionadas con la base para calcular cambios de dirección):**
-    * Miden "cuántos pasos o vueltas ha dado cada rueda", información fundamental para la odometría que calcula cambios de posición y orientación.
-    * Los encoders absolutos proporcionan una "posición única para cada ángulo" y son "Ideal para robótica precisa", lo que sugiere una base fiable para calcular cambios de orientación si no hay deslizamiento.
-
-* **Desventajas (relacionadas con el ajuste de la dirección global del robot):**
-    * Los encoders incrementales "No indican posición absoluta $\rightarrow$ necesitan referencia inicial" para conocer la orientación de partida.
-    * La odometría basada en encoders (que se usa para inferir la dirección) acumula errores. La IMU o el LIDAR se pueden usar para "corregir errores" de la odometría.
-
-## ¿Qué efecto tiene la inclinación o el giro en el movimiento del robot, y cómo se corrige con el IMU?
-
-* **Giro (Yaw):**
-    * El Yaw ($\theta$) es la orientación del robot en el plano y define su dirección de movimiento
-    * Un cambio en el Yaw ($\dot{\theta} \neq 0$) significa que el robot está girando, lo cual altera su trayectoria. La velocidad angular ($\omega$) del robot define cuánto rota sobre su propio eje.
-
-* **Inclinación (Roll, Pitch):**
-    * La inclinación es un cambio de postura que puede ser detectado por el acelerómetro de una IMU.
-    * Afecta la "estabilidad dinámica" del robot, que es su capacidad de mantener el equilibrio mientras se mueve considerando cambios de postura.
-
-**Cómo se Corrige con la IMU:**
-
-* **Detección por la IMU:**
-    * El **giroscopio** mide la velocidad angular en los tres ejes (roll, pitch, yaw).
-    * El **acelerómetro** mide la aceleración lineal y puede detectar si el robot "se inclina".
-
-* **Corrección del Giro (Yaw / Dirección):**
-    * La "Velocidad angular en Z" medida por el giroscopio se usa para estimar la orientación (Yaw, $\theta$) del robot.
-    * Esta estimación de $\theta$ se obtiene al integrar la velocidad angular Z. El valor de $\theta$ resultante se utiliza en el sistema de control y en las ecuaciones de estimación de posición para ajustar la dirección.
-
-* **Corrección de la Inclinación y Estimación General del Ángulo:**
-    * Para obtener una estimación precisa del ángulo de inclinación, se pueden combinar las mediciones del giroscopio y del acelerómetro mediante un **Filtro de Kalman**.
-    * El Filtro de Kalman proporciona la mejor estimación del estado actual combinando predicción y mediciones ruidosas, permitiendo una corrección más fiable del ángulo.
-    * Para la estabilidad dinámica, un "sistema de control activo del equilibrio" utiliza sensores IMU para compensar los cambios de postura como la inclinación.
