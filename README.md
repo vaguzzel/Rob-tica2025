@@ -11,6 +11,7 @@
 
 https://drive.google.com/drive/folders/1r1DnHRjlIKAMqeIxQTCVya8Y_QAMsd5l?usp=sharing
 
+Respecto a las conexiones, seguimos las mismas instrucciones del github, lo único distinto fue hacer una conexion compartida en la protoboard ya que el mpu y el sensor rgb compartían dos puertos: SCL y SDA, por lo que se conectaron esos 2 puertos desde el arduino hacia la protoboard y luego el mpu y el sensor rgb se conectaron a la protoboard.
 
 # Parte 1: Configuración del Hardware y pruebas iniciales
 
