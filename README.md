@@ -113,6 +113,7 @@ Análisis: 2.4-Probar_navegacin_en_un_circuito_con_obstculos_y_superficies_en_di
 Código: Punto3_4_5_6_Parte2_Lab2.ino
 
 Análisis: 2.5-_Ajustar_parmetros_para_mejorar_la_deteccin_y_estabilidad_del_sistema..pdf
+
 ---
 
 * Implementación de estrategias de navegación basadas en reglas.
