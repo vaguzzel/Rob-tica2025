@@ -159,4 +159,47 @@ Estas técnicas permiten reducir las fluctuaciones no deseadas y obtener medicio
 
 ## Preguntas parte 2
 
-## ¿Cómo se calcula la velocidad del robot sin encoders usando PWM?
+
+## Si el robot detecta el color rojo en el suelo ¿Qué acción debería tomar? ¿Por qué?
+
+Al detectar el color rojo, el robot debe ejecutar una maniobra predefinida que consiste en un giro de 90° a la izquierda seguido de un avance corto para salir de la zona. Esta acción se debe a que su sistema se basa en un conjunto de reglas de navegación reactivas que le permiten responder a estímulos de color en el entorno. Este comportamiento es una aplicación del principio de percepción robótica, donde los datos de un sensor se usan para tomar decisiones y ejecutar tareas. El objetivo es activar una función específica que le permita navegar de forma autónoma en un circuito con superficies de diferentes colores.
+
+## Si el sensor ultrasónico detecta valores erráticos ¿Qué estrategias podrías aplicar para mejorar la precisión?
+
+Para mejorar la precisión de un sensor ultrasónico con valores erráticos, podemos aplicar dos estrategias principales:
+
+Filtrado de Datos: Utilizar filtros (como el de media móvil, ponderada o pasa bajos) para suavizar la señal y eliminar los picos o valores inconsistentes causados por ruido aleatorio, ya sea eléctrico o del entorno.
+
+Calibración: Aplicar un factor de corrección para ajustar los errores sistemáticos del sensor, como los de escala. Esto se logra comparando las lecturas del sensor con distancias reales conocidas y calculando un factor para que las mediciones futuras sean más exactas.
+
+## Si tuvieras que integrar un nuevo sensor para mejorar la navegación del robot ¿Cuál elegirías y por qué?
+
+Creemos que la mejor opción para integrar es un sensor **LIDAR 2D**. Este componente transformaría la navegación del robot por las siguientes razones:
+
+* **Supera la Percepción Limitada:** Reemplaza la "visión de túnel" del sensor ultrasónico actual por un escaneo de 360 grados del entorno, lo que permite una detección de obstáculos completa y precisa.
+
+* **Habilita el Mapeo (SLAM):** Es una pieza muy importante para implementar algoritmos de **SLAM (Simultaneous Localization and Mapping)**, una capacidad que le permitiría al robot construir un mapa de su entorno y saber dónde se encuentra dentro de él.
+
+* **Permite la Navegación Planificada:** Con un mapa, el robot puede dejar de ser puramente reactivo. Podría usar algoritmos como **A\* o Dijkstra** para planificar rutas óptimas hacia un objetivo, en lugar de solo reaccionar a lo que tiene inmediatamente en frente.
+
+## ¿Cuál es el tiempo de respuesta del robot al detectar un cambio de color?
+
+Podemos decir que el tiempo de respuesta del robot ante un cambio de color es, en el peor de los casos, de aproximadamente 110 milisegundos. Esta es la latencia máxima, ya que el robot solo puede detectar y reaccionar al cambio una vez por cada ciclo de su bucle principal.
+
+Revisando nuestro código:
+El tiempo de respuesta del robot no es un valor fijo, sino que está determinado por la duración total de un ciclo de la función loop().
+
+Factores principales que definen el tiempo:
+
+Tiempo de Lectura de Sensores:
+
+Sensor de Color: La configuración TCS34725_INTEGRATIONTIME_24MS establece un tiempo de integración de 24 milisegundos para cada lectura de color.
+Sensor Ultrasónico: La función pulseIn() tiene un tiempo de espera máximo (timeout) de 25 milisegundos.
+
+Retardo Fijo (delay):
+
+Al final de cada ciclo loop(), existe un retardo deliberado de 50 milisegundos (delay(50);), que es el mayor contribuyente a la latencia.
+Sumando estos retardos junto con el tiempo de procesamiento y comunicación serial (aproximadamente 10 ms), el tiempo total de un ciclo es:
+
+Tiempo de Ciclo ≈ 24 ms (color) + hasta 25 ms (ultrasonido) + ~10 ms (procesamiento) + 50 ms (delay) ≈ 109 ms.
+
