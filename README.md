@@ -176,11 +176,11 @@ Calibración: Aplicar un factor de corrección para ajustar los errores sistemá
 
 Creemos que la mejor opción para integrar es un sensor **LIDAR 2D**. Este componente transformaría la navegación del robot por las siguientes razones:
 
-* **Supera la Percepción Limitada:** Reemplaza la "visión de túnel" del sensor ultrasónico actual por un escaneo de 360 grados del entorno, lo que permite una detección de obstáculos completa y precisa.
+**Supera la Percepción Limitada:** Reemplaza la "visión de túnel" del sensor ultrasónico actual por un escaneo de 360 grados del entorno, lo que permite una detección de obstáculos completa y precisa.
 
-* **Habilita el Mapeo (SLAM):** Es una pieza muy importante para implementar algoritmos de **SLAM (Simultaneous Localization and Mapping)**, una capacidad que le permitiría al robot construir un mapa de su entorno y saber dónde se encuentra dentro de él.
+**Habilita el Mapeo (SLAM):** Es una pieza muy importante para implementar algoritmos de **SLAM (Simultaneous Localization and Mapping)**, una capacidad que le permitiría al robot construir un mapa de su entorno y saber dónde se encuentra dentro de él.
 
-* **Permite la Navegación Planificada:** Con un mapa, el robot puede dejar de ser puramente reactivo. Podría usar algoritmos como **A\* o Dijkstra** para planificar rutas óptimas hacia un objetivo, en lugar de solo reaccionar a lo que tiene inmediatamente en frente.
+**Permite la Navegación Planificada:** Con un mapa, el robot puede dejar de ser puramente reactivo. Podría usar algoritmos como **A\* o Dijkstra** para planificar rutas óptimas hacia un objetivo, en lugar de solo reaccionar a lo que tiene inmediatamente en frente.
 
 ## ¿Cuál es el tiempo de respuesta del robot al detectar un cambio de color?
 
